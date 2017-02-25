@@ -50,5 +50,12 @@ class ViewController: UIViewController {
             displayValue = brain.result
         }
     }
+    
+    @IBAction func save() {
+    }
+    
+    @IBAction func restore() {
+    }
+    
 }
 
