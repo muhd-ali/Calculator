@@ -10,8 +10,34 @@ import Foundation
 
 class CalculatorBrain {
     fileprivate var accumulator = 0.0
+    typealias PropertyList = [AnyObject]
+    fileprivate var internalProgram = [AnyObject]()
+    var program: PropertyList {
+        get {
+            return internalProgram
+        }
+        
+        set {
+            clear()
+            let arrayOfOps = newValue
+            for op in arrayOfOps {
+                if let operand = op as? Double {
+                    setOperand(operand)
+                } else if let operation = op as? String {
+                    performOperation(symbol: operation)
+                }
+            }
+        }
+    }
+    
+    func clear() {
+        accumulator = 0.0
+        pending = nil
+        internalProgram.removeAll()
+    }
     
     func setOperand(_ operand: Double) {
+        internalProgram.append(operand as AnyObject)
         accumulator = operand
     }
     
@@ -58,6 +84,7 @@ class CalculatorBrain {
     fileprivate var pending: PendingOperation? = nil
     
     func performOperation(symbol: String) {
+        internalProgram.append(symbol as AnyObject)
         if let operation = operations[symbol] {
             switch operation {
             case .Constant(let value):
